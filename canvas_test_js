@@ -1,0 +1,61 @@
+let canvas = document.querySelector('canvas');
+
+const pi = Math.PI;
+
+function rand (start, stop) {
+	// Установить длину интервала а потом передвинуть его
+	return Math.random() * (stop - start) + start;
+}
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let ctx = canvas.getContext('2d');
+
+/* let vertices = {
+	a: [200, 200],
+	b: [600, 150],
+	c: [600, 300],
+}; */
+
+/* ctx.beginPath();
+ctx.moveTo(vertices.a[0], vertices.a[1]);
+ctx.lineTo(600, 150);
+ctx.lineTo(600, 300);
+ctx.lineTo(200, 200);
+ctx.lineTo(600, 262.5);
+ctx.strokeStyle = "blue";
+ctx.stroke(); */
+
+/* for (let i = 300; i <= 550; i += 5) {
+	ctx.beginPath();
+	ctx.arc(i, 300, 100, 0, 2*pi, false);
+	ctx.strokeStyle = "#22c1c3";
+	ctx.stroke();
+} */
+
+	let x = 50;
+	let y = 200;
+	let dx = 5 ;
+	
+	function animate () {
+		requestAnimationFrame(animate);
+
+		// Отчистка поля canvas
+		ctx.clearRect(0, 0, innerWidth, innerHeight);
+		
+		ctx.beginPath();
+		ctx.arc(x, y, 50, 0, 2*pi, false);
+		ctx.strokeStyle = "#b21f1f";
+		ctx.stroke();
+		
+		if (x + 50 > innerWidth || x - 50 < 0) {
+			dx = -dx;
+		}
+		x += dx;
+	}
+	
+	animate();
+
+
+
