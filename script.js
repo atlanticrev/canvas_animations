@@ -1,5 +1,5 @@
 
-/******************
+/*******************
  ***  Definitions
  *******************/
 
@@ -23,18 +23,21 @@ function randomColor() {
   ];
 }
 
-function circleFactory(quantity) {
+function circleFactory (quantity) {
   let result = [];
 
   for (let i = 0; i < quantity; i++) {
-    result.push(new Circle(
-      random(0, innerWidth - random(2, 30)),
-      random(0, innerHeight - random(2, 30)),
-      random(2, 30),
-      random(0, 12) - 6, random(0, 12) - 6,
-      randomColor()
-      )
-    );
+
+    let radius = random(2, 30);
+    let x = random(radius, innerWidth - radius);
+    let y = random(radius, innerHeight - radius);
+
+    // Получение отрицательных скоростей
+    let dx = (random(0, 1) - 0.5) * 10;
+    let dy = (random(0, 1) - 0.5) * 10;
+    let color = randomColor();
+
+    result.push(new Circle(x, y, radius, dx, dy, color));
   }
 
   return result;
@@ -72,9 +75,11 @@ Circle.prototype.update = function () {
 
   this.x += this.dx;
   this.y += this.dy;
+
+  this.draw();
 };
 
-/******************
+/*******************
  ***	Drawing
  *******************/
 
@@ -105,7 +110,6 @@ function animate() {
   ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
   circles.forEach(function (circle) {
-    circle.draw();
     circle.update();
   });
 }
