@@ -19,12 +19,16 @@ function randomColor () {
 
 function circleFactory (quantity) {
 	let result = [];
-	
+
 	for (let i = 0; i < quantity; i++) {
-		result.push(new Circle(random(0, innerWidth - random(2, 30)), random(0, innerHeight - random(2, 30)), random(2, 30), 
-	random(0, 12) - 6, random(0, 12) - 6, randomColor()));
+		result.push(new Circle(
+				random(0, innerWidth - random(2, 30)),
+				random(0, innerHeight - random(2, 30)), random(2, 30),
+				random(0, 12) - 6, random(0, 12) - 6, randomColor()
+			)
+		);
 	}
-	
+
 	return result;
 }
 
@@ -43,7 +47,7 @@ Circle.prototype.draw = function () {
 	ctx.strokeStyle = this.color;
 	ctx.lineWidth = 2;
 	ctx.stroke();
-}
+};
 
 Circle.prototype.update = function () {
 	// x + radius - левая граница окружности, x - radius правая граница окружности
@@ -51,14 +55,14 @@ Circle.prototype.update = function () {
 		// Меняю направление скорости, если окружность доходит до края справа или слева
 		this.dx = -this.dx;
 	}
-		
+
 	if (this.y + this.radius > window.innerHeight || this.y - this.radius < 0) {
 		this.dy = -this.dy;
 	}
-	
+
 	this.x += this.dx;
 	this.y += this.dy;
-}
+};
 
 /*
 * Drawing
@@ -83,33 +87,20 @@ ctx.stroke(); */
 	ctx.strokeStyle = 'rgb(' + randomColor().toString() + ')';
 	ctx.stroke();
 } */
-	
-/* 	let circleOne = new Circle(random(20, innerWidth - 20), random(20, innerHeight - 20), 20, 
-	random(0, 12) - 6, random(0, 12) - 6, randomColor());
-	
-	let circleTwo = new Circle(random(20, innerWidth - 20), random(20, innerHeight - 20), 20, 
-	random(0, 12) - 6, random(0, 12) - 6, randomColor()); */
-	
-	let circles = circleFactory(250);
-	
-	function animate () {
-		requestAnimationFrame(animate);
-		ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-		
-/* 		let circles = circleFactory(50); */
-		circles.forEach(function (circle) {
-			circle.draw();
-			circle.update();
-		});
-/* 		
-		circleOne.draw();
-		circleTwo.draw();
-		
-		circleOne.update();
-		circleTwo.update(); */
-	}
-	
-	animate();
+
+let circles = circleFactory(250);
+
+function animate () {
+	requestAnimationFrame(animate);
+	ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+	circles.forEach(function (circle) {
+		circle.draw();
+		circle.update();
+	});
+}
+
+animate();
 
 
 

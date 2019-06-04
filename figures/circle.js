@@ -13,7 +13,7 @@ Circle.prototype.draw = function () {
 	ctx.strokeStyle = this.color;
 	ctx.lineWidth = 2;
 	ctx.stroke();
-}
+};
 
 Circle.prototype.update = function () {
 	// x + radius - левая граница окружности, x - radius правая граница окружности
@@ -21,11 +21,11 @@ Circle.prototype.update = function () {
 		// Меняю направление скорости, если окружность доходит до края справа или слева
 		this.dx = -this.dx;
 	}
-		
+
 	if (this.y + this.radius > window.innerHeight || this.y - this.radius < 0) {
 		this.dy = -this.dy;
 	}
-	
+
 	this.x += this.dx;
 	this.y += this.dy;
-}
+};
