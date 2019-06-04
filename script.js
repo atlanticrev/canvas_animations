@@ -10,9 +10,21 @@ canvas.height = window.innerHeight;
 
 const pi = Math.PI;
 
+const colors = [
+  '#304360',
+  '#3e586a',
+  '#3f6c77',
+  '#4c8a84',
+  '#41a48c'
+];
+
 function random(start, stop) {
   // Установить длину интервала а потом передвинуть его
   return Math.random() * (stop - start) + start;
+}
+
+function randomPraetorianColor(colors) {
+  return colors[Math.floor(random(0, 5))];
 }
 
 function randomColor() {
@@ -35,7 +47,7 @@ function circleFactory (quantity) {
     // Получение отрицательных скоростей
     let dx = (random(0, 1) - 0.5) * 10;
     let dy = (random(0, 1) - 0.5) * 10;
-    let color = randomColor();
+    let color = randomPraetorianColor(colors);
 
     result.push(new Circle(x, y, radius, dx, dy, color));
   }
@@ -49,7 +61,7 @@ function Circle(x, y, radius, dx, dy, color) {
   this.radius = radius;
   this.dx = dx;
   this.dy = dy;
-  this.color = 'rgb(' + color.toString() + ')';
+  this.color = color;
 }
 
 Circle.prototype.draw = function () {
