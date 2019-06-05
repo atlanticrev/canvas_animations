@@ -40,19 +40,19 @@ function animate() {
   circles.forEach(function (circle) {
     let dr = 2;
 
-    // Область определяется не совсем корректно,
-    // так как она квадратная, а у нас кружок
+    // Использую Math.hypot для нахождения расстояния между точками
 
-    if ( Math.abs(mouse.x - circle.x) < circle.radius
-      && Math.abs(mouse.y - circle.y) < circle.radius) {
+    if ( Math.hypot( mouse.x - circle.x, mouse.y - circle.y ) < circle.radius ) {
+
+      console.log(Math.hypot( mouse.x - circle.x, mouse.y - circle.y ), circle.radius);
 
       // Ограничиваем то, во сколько раз увеличится кружок
 
-      if (circle.radius <= circle.initialRadius * 3) {
+      if ( circle.radius <= circle.initialRadius * 3 ) {
         circle.radius += dr;
       }
 
-    } else if (circle.radius > circle.initialRadius) {
+    } else if ( circle.radius > circle.initialRadius ) {
 
       circle.radius -= dr;
     }

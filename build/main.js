@@ -260,11 +260,11 @@ function animate() {
   requestAnimationFrame(animate);
   context.clearRect(0, 0, window.innerWidth, window.innerHeight);
   circles.forEach(function (circle) {
-    var dr = 2; // Область определяется не совсем корректно,
-    // так как она квадратная, а у нас кружок
+    var dr = 2; // Использую Math.hypot для нахождения расстояния между точками
 
-    if (Math.abs(mouse.x - circle.x) < circle.radius && Math.abs(mouse.y - circle.y) < circle.radius) {
-      // Ограничиваем то, во сколько раз увеличится кружок
+    if (Math.hypot(mouse.x - circle.x, mouse.y - circle.y) < circle.radius) {
+      console.log(Math.hypot(mouse.x - circle.x, mouse.y - circle.y), circle.radius); // Ограничиваем то, во сколько раз увеличится кружок
+
       if (circle.radius <= circle.initialRadius * 3) {
         circle.radius += dr;
       }
