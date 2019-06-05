@@ -1,21 +1,25 @@
 var path = require('path');
-var webpack = require('webpack');
+// var webpack = require('webpack');
 
 module.exports = {
+  mode: 'development',
   entry: './script.js',
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'main.js'
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
-        loader: 'babel-loader',
-        query: {
-          presets: ['es2015']
-        }
-      }
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+          },
+        },
+      },
     ]
   },
   stats: {
