@@ -20,9 +20,21 @@ function randomColor() {
   ];
 }
 
+let getHexadecimalNumberForColor = () => {
+  let result = [];
+
+  for ( let i = 0; i < 6; i++ ) {
+    result[i] = Math.floor(Math.random() * 16).toString(16);
+  }
+
+  return '#' + result.toString().replace(/,/g, '');
+};
+
+
 export {
   random,
   randomPaletteColors,
   randomSpeedWithDirection,
-  randomColor
+  randomColor,
+  getHexadecimalNumberForColor
 }

@@ -185,7 +185,7 @@ Circle.prototype.update = function () {
 /*!********************!*\
   !*** ./helpers.js ***!
   \********************/
-/*! exports provided: random, randomPaletteColors, randomSpeedWithDirection, randomColor */
+/*! exports provided: random, randomPaletteColors, randomSpeedWithDirection, randomColor, getHexadecimalNumberForColor */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -194,6 +194,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "randomPaletteColors", function() { return randomPaletteColors; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "randomSpeedWithDirection", function() { return randomSpeedWithDirection; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "randomColor", function() { return randomColor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getHexadecimalNumberForColor", function() { return getHexadecimalNumberForColor; });
 // Не включает stop
 function random(start, stop) {
   // Установить длину интервала а потом передвинуть его
@@ -211,6 +212,16 @@ function randomSpeedWithDirection(multiplier) {
 function randomColor() {
   return [random(0, 255), random(0, 255), random(0, 255)];
 }
+
+var getHexadecimalNumberForColor = function getHexadecimalNumberForColor() {
+  var result = [];
+
+  for (var i = 0; i < 6; i++) {
+    result[i] = Math.floor(Math.random() * 16).toString(16);
+  }
+
+  return '#' + result.toString().replace(/,/g, '');
+};
 
 
 
