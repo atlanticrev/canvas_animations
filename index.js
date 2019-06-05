@@ -19,6 +19,13 @@ window.addEventListener('mousemove', (e) => {
   mouse.y = e.y;
 });
 
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  init();
+});
+
 /*******************
  ***	Drawing
  *******************/
@@ -32,6 +39,10 @@ let circles = circleFactory(150);
 circles.forEach((circle) => {
   circle.initialRadius = circle.radius;
 });
+
+function init () {
+  circles = circleFactory(150);
+}
 
 function animate() {
   requestAnimationFrame(animate);

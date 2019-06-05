@@ -18,6 +18,7 @@ const colors = [
 
 function circleFactory (quantity) {
   let result = [];
+  let velocityCoefficient = 3;
 
   for (let i = 0; i < quantity; i++) {
 
@@ -26,8 +27,8 @@ function circleFactory (quantity) {
     let y = random(radius, innerHeight - radius);
 
     // Получение отрицательных скоростей
-    let dx = randomSpeedWithDirection(1);
-    let dy = randomSpeedWithDirection(1);
+    let dx = randomSpeedWithDirection(velocityCoefficient);
+    let dy = randomSpeedWithDirection(velocityCoefficient);
     let color = randomPaletteColors(colors);
 
     result.push(new Circle(x, y, radius, dx, dy, color));

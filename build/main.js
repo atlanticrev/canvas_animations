@@ -109,14 +109,15 @@ var colors = ['#304360', '#3e586a', '#3f6c77', '#4c8a84', '#41a48c']; // const c
 
 function circleFactory(quantity) {
   var result = [];
+  var velocityCoefficient = 3;
 
   for (var i = 0; i < quantity; i++) {
     var radius = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["random"])(2, 30);
     var x = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["random"])(radius, innerWidth - radius);
     var y = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["random"])(radius, innerHeight - radius); // Получение отрицательных скоростей
 
-    var dx = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["randomSpeedWithDirection"])(1);
-    var dy = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["randomSpeedWithDirection"])(1);
+    var dx = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["randomSpeedWithDirection"])(velocityCoefficient);
+    var dy = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["randomSpeedWithDirection"])(velocityCoefficient);
     var color = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["randomPaletteColors"])(colors);
     result.push(new _figures_Circle__WEBPACK_IMPORTED_MODULE_1__["Circle"](x, y, radius, dx, dy, color));
   }
@@ -255,6 +256,11 @@ window.addEventListener('mousemove', function (e) {
   mouse.x = e.x;
   mouse.y = e.y;
 });
+window.addEventListener('resize', function () {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  init();
+});
 /*******************
  ***	Drawing
  *******************/
@@ -266,6 +272,10 @@ var circles = Object(_circleFactory__WEBPACK_IMPORTED_MODULE_0__["circleFactory"
 circles.forEach(function (circle) {
   circle.initialRadius = circle.radius;
 });
+
+function init() {
+  circles = Object(_circleFactory__WEBPACK_IMPORTED_MODULE_0__["circleFactory"])(150);
+}
 
 function animate() {
   requestAnimationFrame(animate);
