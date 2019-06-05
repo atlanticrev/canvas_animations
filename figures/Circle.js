@@ -1,4 +1,4 @@
-import { context } from "../script";
+import { context } from "../index";
 
 function Circle(x, y, radius, dx, dy, color) {
 	this.x = x;
@@ -14,6 +14,8 @@ Circle.prototype.draw = function () {
 	context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
 	context.strokeStyle = this.color;
 	context.lineWidth = 2;
+	context.fillStyle = this.color;
+	context.fill();
 	context.stroke();
 };
 

@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./script.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./index.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -110,8 +110,8 @@ function circleFactory(quantity) {
     var x = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["random"])(radius, innerWidth - radius);
     var y = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["random"])(radius, innerHeight - radius); // Получение отрицательных скоростей
 
-    var dx = (Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["random"])(0, 1) - 0.5) * 10;
-    var dy = (Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["random"])(0, 1) - 0.5) * 10;
+    var dx = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["randomSpeedWithDirection"])(1);
+    var dy = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["randomSpeedWithDirection"])(1);
     var color = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["randomPraetorianColor"])(colors);
     result.push(new _figures_Circle__WEBPACK_IMPORTED_MODULE_1__["Circle"](x, y, radius, dx, dy, color));
   }
@@ -133,7 +133,7 @@ function circleFactory(quantity) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Circle", function() { return Circle; });
-/* harmony import */ var _script__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../script */ "./script.js");
+/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../index */ "./index.js");
 
 
 function Circle(x, y, radius, dx, dy, color) {
@@ -146,11 +146,13 @@ function Circle(x, y, radius, dx, dy, color) {
 }
 
 Circle.prototype.draw = function () {
-  _script__WEBPACK_IMPORTED_MODULE_0__["context"].beginPath();
-  _script__WEBPACK_IMPORTED_MODULE_0__["context"].arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
-  _script__WEBPACK_IMPORTED_MODULE_0__["context"].strokeStyle = this.color;
-  _script__WEBPACK_IMPORTED_MODULE_0__["context"].lineWidth = 2;
-  _script__WEBPACK_IMPORTED_MODULE_0__["context"].stroke();
+  _index__WEBPACK_IMPORTED_MODULE_0__["context"].beginPath();
+  _index__WEBPACK_IMPORTED_MODULE_0__["context"].arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
+  _index__WEBPACK_IMPORTED_MODULE_0__["context"].strokeStyle = this.color;
+  _index__WEBPACK_IMPORTED_MODULE_0__["context"].lineWidth = 2;
+  _index__WEBPACK_IMPORTED_MODULE_0__["context"].fillStyle = this.color;
+  _index__WEBPACK_IMPORTED_MODULE_0__["context"].fill();
+  _index__WEBPACK_IMPORTED_MODULE_0__["context"].stroke();
 };
 
 Circle.prototype.update = function () {
@@ -178,13 +180,14 @@ Circle.prototype.update = function () {
 /*!********************!*\
   !*** ./helpers.js ***!
   \********************/
-/*! exports provided: random, randomPraetorianColor, randomColor */
+/*! exports provided: random, randomPraetorianColor, randomSpeedWithDirection, randomColor */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "random", function() { return random; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "randomPraetorianColor", function() { return randomPraetorianColor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "randomSpeedWithDirection", function() { return randomSpeedWithDirection; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "randomColor", function() { return randomColor; });
 function random(start, stop) {
   // Установить длину интервала а потом передвинуть его
@@ -195,6 +198,10 @@ function randomPraetorianColor(colors) {
   return colors[Math.floor(random(0, 5))];
 }
 
+function randomSpeedWithDirection(multiplier) {
+  return (random(0, 1) - 0.5) * 2 * multiplier;
+}
+
 function randomColor() {
   return [random(0, 255), random(0, 255), random(0, 255)];
 }
@@ -203,10 +210,10 @@ function randomColor() {
 
 /***/ }),
 
-/***/ "./script.js":
-/*!*******************!*\
-  !*** ./script.js ***!
-  \*******************/
+/***/ "./index.js":
+/*!******************!*\
+  !*** ./index.js ***!
+  \******************/
 /*! exports provided: context */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -223,16 +230,42 @@ var canvas = document.querySelector('canvas');
 var context = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+var mouse = {
+  x: undefined,
+  y: undefined
+};
+window.addEventListener('mousemove', function (e) {
+  mouse.x = e.x;
+  mouse.y = e.y;
+});
 /*******************
  ***	Drawing
  *******************/
 
-var circles = Object(_circleFactory__WEBPACK_IMPORTED_MODULE_0__["circleFactory"])(250);
+var circles = Object(_circleFactory__WEBPACK_IMPORTED_MODULE_0__["circleFactory"])(150); // Определяю начальный радиус кружка для того,
+// чтобы уменьшить текущий радиус до его первоначального
+// значения, когда курсор покидает окрестность кружка
+
+circles.forEach(function (circle) {
+  circle.initialRadius = circle.radius;
+});
 
 function animate() {
   requestAnimationFrame(animate);
   context.clearRect(0, 0, window.innerWidth, window.innerHeight);
   circles.forEach(function (circle) {
+    var dr = 2; // Область определяется не совсем корректно,
+    // так как она квадратная, а у нас кружок
+
+    if (Math.abs(mouse.x - circle.x) < circle.radius && Math.abs(mouse.y - circle.y) < circle.radius) {
+      // Ограничиваем то, во сколько раз увеличится кружок
+      if (circle.radius <= circle.initialRadius * 3) {
+        circle.radius += dr;
+      }
+    } else if (circle.radius > circle.initialRadius) {
+      circle.radius -= dr;
+    }
+
     circle.update();
   });
 }

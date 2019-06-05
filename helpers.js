@@ -7,6 +7,10 @@ function randomPraetorianColor(colors) {
   return colors[Math.floor(random(0, 5))];
 }
 
+function randomSpeedWithDirection (multiplier) {
+  return ((random(0, 1) - 0.5) * 2) * multiplier;
+}
+
 function randomColor() {
   return [
     random(0, 255),
@@ -18,5 +22,6 @@ function randomColor() {
 export {
   random,
   randomPraetorianColor,
+  randomSpeedWithDirection,
   randomColor
 }

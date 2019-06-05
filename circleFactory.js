@@ -1,4 +1,4 @@
-import {random, randomPraetorianColor} from "./helpers";
+import {random, randomPraetorianColor, randomSpeedWithDirection} from "./helpers";
 import { Circle } from "./figures/Circle";
 
 const colors = [
@@ -19,8 +19,8 @@ function circleFactory (quantity) {
     let y = random(radius, innerHeight - radius);
 
     // Получение отрицательных скоростей
-    let dx = (random(0, 1) - 0.5) * 10;
-    let dy = (random(0, 1) - 0.5) * 10;
+    let dx = randomSpeedWithDirection(1);
+    let dy = randomSpeedWithDirection(1);
     let color = randomPraetorianColor(colors);
 
     result.push(new Circle(x, y, radius, dx, dy, color));
