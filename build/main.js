@@ -100,7 +100,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _figures_Circle__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./figures/Circle */ "./figures/Circle.js");
 
 
-var colors = ['#304360', '#3e586a', '#3f6c77', '#4c8a84', '#41a48c'];
+var colors = ['#304360', '#3e586a', '#3f6c77', '#4c8a84', '#41a48c']; // const colors = [
+//   '#35477d',
+//   '#6c5b7b',
+//   '#c06c84',
+//   '#f67280'
+// ];
 
 function circleFactory(quantity) {
   var result = [];
@@ -112,7 +117,7 @@ function circleFactory(quantity) {
 
     var dx = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["randomSpeedWithDirection"])(1);
     var dy = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["randomSpeedWithDirection"])(1);
-    var color = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["randomPraetorianColor"])(colors);
+    var color = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["randomPaletteColors"])(colors);
     result.push(new _figures_Circle__WEBPACK_IMPORTED_MODULE_1__["Circle"](x, y, radius, dx, dy, color));
   }
 
@@ -180,22 +185,23 @@ Circle.prototype.update = function () {
 /*!********************!*\
   !*** ./helpers.js ***!
   \********************/
-/*! exports provided: random, randomPraetorianColor, randomSpeedWithDirection, randomColor */
+/*! exports provided: random, randomPaletteColors, randomSpeedWithDirection, randomColor */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "random", function() { return random; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "randomPraetorianColor", function() { return randomPraetorianColor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "randomPaletteColors", function() { return randomPaletteColors; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "randomSpeedWithDirection", function() { return randomSpeedWithDirection; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "randomColor", function() { return randomColor; });
+// Не включает stop
 function random(start, stop) {
   // Установить длину интервала а потом передвинуть его
   return Math.random() * (stop - start) + start;
 }
 
-function randomPraetorianColor(colors) {
-  return colors[Math.floor(random(0, 5))];
+function randomPaletteColors(colors) {
+  return colors[Math.floor(random(0, colors.length + 1))];
 }
 
 function randomSpeedWithDirection(multiplier) {

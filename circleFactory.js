@@ -1,4 +1,4 @@
-import {random, randomPraetorianColor, randomSpeedWithDirection} from "./helpers";
+import {random, randomPaletteColors, randomSpeedWithDirection} from "./helpers";
 import { Circle } from "./figures/Circle";
 
 const colors = [
@@ -8,6 +8,13 @@ const colors = [
   '#4c8a84',
   '#41a48c'
 ];
+
+// const colors = [
+//   '#35477d',
+//   '#6c5b7b',
+//   '#c06c84',
+//   '#f67280'
+// ];
 
 function circleFactory (quantity) {
   let result = [];
@@ -21,7 +28,7 @@ function circleFactory (quantity) {
     // Получение отрицательных скоростей
     let dx = randomSpeedWithDirection(1);
     let dy = randomSpeedWithDirection(1);
-    let color = randomPraetorianColor(colors);
+    let color = randomPaletteColors(colors);
 
     result.push(new Circle(x, y, radius, dx, dy, color));
   }
