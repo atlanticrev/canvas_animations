@@ -86,49 +86,6 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./circleFactory.js":
-/*!**************************!*\
-  !*** ./circleFactory.js ***!
-  \**************************/
-/*! exports provided: circleFactory */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "circleFactory", function() { return circleFactory; });
-/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./helpers */ "./helpers.js");
-/* harmony import */ var _figures_Circle__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./figures/Circle */ "./figures/Circle.js");
-
-
-var colors = ['#304360', '#3e586a', '#3f6c77', '#4c8a84', '#41a48c']; // const colors = [
-//   '#35477d',
-//   '#6c5b7b',
-//   '#c06c84',
-//   '#f67280'
-// ];
-
-function circleFactory(quantity) {
-  var result = [];
-  var velocityCoefficient = 3;
-
-  for (var i = 0; i < quantity; i++) {
-    var radius = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["random"])(2, 30);
-    var x = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["random"])(radius, innerWidth - radius);
-    var y = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["random"])(radius, innerHeight - radius); // Получение отрицательных скоростей
-
-    var dx = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["randomSpeedWithDirection"])(velocityCoefficient);
-    var dy = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["randomSpeedWithDirection"])(velocityCoefficient);
-    var color = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["randomPaletteColors"])(colors);
-    result.push(new _figures_Circle__WEBPACK_IMPORTED_MODULE_1__["Circle"](x, y, radius, dx, dy, color));
-  }
-
-  return result;
-}
-
-
-
-/***/ }),
-
 /***/ "./figures/Circle.js":
 /*!***************************!*\
   !*** ./figures/Circle.js ***!
@@ -148,17 +105,19 @@ function Circle(x, y, radius, dx, dy, color) {
   this.radius = radius;
   this.dx = dx;
   this.dy = dy;
-  this.color = color;
+  this.color = color; // Определяю начальный радиус кружка для того,
+  // чтобы уменьшить текущий радиус до его первоначального
+  // значения, когда курсор покидает окрестность кружка
+
+  this.initialRadius = radius;
 }
 
 Circle.prototype.draw = function () {
   _index__WEBPACK_IMPORTED_MODULE_0__["context"].beginPath();
   _index__WEBPACK_IMPORTED_MODULE_0__["context"].arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
-  _index__WEBPACK_IMPORTED_MODULE_0__["context"].strokeStyle = this.color;
-  _index__WEBPACK_IMPORTED_MODULE_0__["context"].lineWidth = 2;
   _index__WEBPACK_IMPORTED_MODULE_0__["context"].fillStyle = this.color;
   _index__WEBPACK_IMPORTED_MODULE_0__["context"].fill();
-  _index__WEBPACK_IMPORTED_MODULE_0__["context"].stroke();
+  _index__WEBPACK_IMPORTED_MODULE_0__["context"].closePath();
 };
 
 Circle.prototype.update = function () {
@@ -182,52 +141,6 @@ Circle.prototype.update = function () {
 
 /***/ }),
 
-/***/ "./helpers.js":
-/*!********************!*\
-  !*** ./helpers.js ***!
-  \********************/
-/*! exports provided: random, randomPaletteColors, randomSpeedWithDirection, randomColor, getHexadecimalNumberForColor */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "random", function() { return random; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "randomPaletteColors", function() { return randomPaletteColors; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "randomSpeedWithDirection", function() { return randomSpeedWithDirection; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "randomColor", function() { return randomColor; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getHexadecimalNumberForColor", function() { return getHexadecimalNumberForColor; });
-// Не включает stop
-function random(start, stop) {
-  // Установить длину интервала а потом передвинуть его
-  return Math.random() * (stop - start) + start;
-}
-
-function randomPaletteColors(colors) {
-  return colors[Math.floor(random(0, colors.length + 1))];
-}
-
-function randomSpeedWithDirection(multiplier) {
-  return (random(0, 1) - 0.5) * 2 * multiplier;
-}
-
-function randomColor() {
-  return [random(0, 255), random(0, 255), random(0, 255)];
-}
-
-var getHexadecimalNumberForColor = function getHexadecimalNumberForColor() {
-  var result = [];
-
-  for (var i = 0; i < 6; i++) {
-    result[i] = Math.floor(Math.random() * 16).toString(16);
-  }
-
-  return '#' + result.toString().replace(/,/g, '');
-};
-
-
-
-/***/ }),
-
 /***/ "./index.js":
 /*!******************!*\
   !*** ./index.js ***!
@@ -238,7 +151,8 @@ var getHexadecimalNumberForColor = function getHexadecimalNumberForColor() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "context", function() { return context; });
-/* harmony import */ var _circleFactory__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./circleFactory */ "./circleFactory.js");
+/* harmony import */ var _figures_Circle__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./figures/Circle */ "./figures/Circle.js");
+// import { circleFactory } from "./circleFactory";
 
 /*******************
  ***  Definitions
@@ -264,37 +178,42 @@ window.addEventListener('resize', function () {
 /*******************
  ***	Drawing
  *******************/
+// let circles = circleFactory(150);
 
-var circles = Object(_circleFactory__WEBPACK_IMPORTED_MODULE_0__["circleFactory"])(150); // Определяю начальный радиус кружка для того,
-// чтобы уменьшить текущий радиус до его первоначального
-// значения, когда курсор покидает окрестность кружка
-
-circles.forEach(function (circle) {
-  circle.initialRadius = circle.radius;
-});
+var circle;
+init();
 
 function init() {
-  circles = Object(_circleFactory__WEBPACK_IMPORTED_MODULE_0__["circleFactory"])(150);
+  // circles = circleFactory(150);
+  circle = new _figures_Circle__WEBPACK_IMPORTED_MODULE_0__["Circle"](canvas.width / 2, canvas.height / 2, 30, 0, 5, '#304360');
 }
 
 function animate() {
   requestAnimationFrame(animate);
-  context.clearRect(0, 0, window.innerWidth, window.innerHeight);
-  circles.forEach(function (circle) {
-    var dr = 2; // Использую Math.hypot для нахождения расстояния между точками
+  context.clearRect(0, 0, window.innerWidth, window.innerHeight); // circles.forEach(function (circle) {
+  //   let dr = 2;
+  //
+  //   // Использую Math.hypot для нахождения расстояния между точками
+  //
+  //   if ( Math.hypot( mouse.x - circle.x, mouse.y - circle.y ) < circle.radius ) {
+  //
+  //     console.log(Math.hypot( mouse.x - circle.x, mouse.y - circle.y ), circle.radius);
+  //
+  //     // Ограничиваем то, во сколько раз увеличится кружок
+  //
+  //     if ( circle.radius <= circle.initialRadius * 3 ) {
+  //       circle.radius += dr;
+  //     }
+  //
+  //   } else if ( circle.radius > circle.initialRadius ) {
+  //
+  //     circle.radius -= dr;
+  //   }
+  //
+  //   circle.update();
+  // });
 
-    if (Math.hypot(mouse.x - circle.x, mouse.y - circle.y) < circle.radius) {
-      console.log(Math.hypot(mouse.x - circle.x, mouse.y - circle.y), circle.radius); // Ограничиваем то, во сколько раз увеличится кружок
-
-      if (circle.radius <= circle.initialRadius * 3) {
-        circle.radius += dr;
-      }
-    } else if (circle.radius > circle.initialRadius) {
-      circle.radius -= dr;
-    }
-
-    circle.update();
-  });
+  circle.update();
 }
 
 animate();

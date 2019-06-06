@@ -1,4 +1,5 @@
-import { circleFactory } from "./circleFactory";
+// import { circleFactory } from "./circleFactory";
+import {Circle} from "./figures/Circle";
 
 /*******************
  ***  Definitions
@@ -30,46 +31,42 @@ window.addEventListener('resize', () => {
  ***	Drawing
  *******************/
 
-let circles = circleFactory(150);
-
-// Определяю начальный радиус кружка для того,
-// чтобы уменьшить текущий радиус до его первоначального
-// значения, когда курсор покидает окрестность кружка
-
-circles.forEach((circle) => {
-  circle.initialRadius = circle.radius;
-});
+// let circles = circleFactory(150);
+let circle;
+init();
 
 function init () {
-  circles = circleFactory(150);
+  // circles = circleFactory(150);
+  circle = new Circle(canvas.width / 2, canvas.height / 2, 30, 0, 5, '#304360');
 }
 
 function animate() {
   requestAnimationFrame(animate);
   context.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-  circles.forEach(function (circle) {
-    let dr = 2;
-
-    // Использую Math.hypot для нахождения расстояния между точками
-
-    if ( Math.hypot( mouse.x - circle.x, mouse.y - circle.y ) < circle.radius ) {
-
-      console.log(Math.hypot( mouse.x - circle.x, mouse.y - circle.y ), circle.radius);
-
-      // Ограничиваем то, во сколько раз увеличится кружок
-
-      if ( circle.radius <= circle.initialRadius * 3 ) {
-        circle.radius += dr;
-      }
-
-    } else if ( circle.radius > circle.initialRadius ) {
-
-      circle.radius -= dr;
-    }
-
-    circle.update();
-  });
+  // circles.forEach(function (circle) {
+  //   let dr = 2;
+  //
+  //   // Использую Math.hypot для нахождения расстояния между точками
+  //
+  //   if ( Math.hypot( mouse.x - circle.x, mouse.y - circle.y ) < circle.radius ) {
+  //
+  //     console.log(Math.hypot( mouse.x - circle.x, mouse.y - circle.y ), circle.radius);
+  //
+  //     // Ограничиваем то, во сколько раз увеличится кружок
+  //
+  //     if ( circle.radius <= circle.initialRadius * 3 ) {
+  //       circle.radius += dr;
+  //     }
+  //
+  //   } else if ( circle.radius > circle.initialRadius ) {
+  //
+  //     circle.radius -= dr;
+  //   }
+  //
+  //   circle.update();
+  // });
+  circle.update();
 }
 
 animate();

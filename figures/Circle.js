@@ -7,16 +7,20 @@ function Circle(x, y, radius, dx, dy, color) {
 	this.dx = dx;
 	this.dy = dy;
 	this.color = color;
+
+	// Определяю начальный радиус кружка для того,
+	// чтобы уменьшить текущий радиус до его первоначального
+	// значения, когда курсор покидает окрестность кружка
+
+	this.initialRadius = radius;
 }
 
 Circle.prototype.draw = function () {
 	context.beginPath();
 	context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
-	context.strokeStyle = this.color;
-	context.lineWidth = 2;
 	context.fillStyle = this.color;
 	context.fill();
-	context.stroke();
+	context.closePath();
 };
 
 Circle.prototype.update = function () {
